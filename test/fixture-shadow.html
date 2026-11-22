@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Shadow DOM Cover — No Cover fixture</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  body { font-family: system-ui, sans-serif; margin: 0; background: #fff; color: #111; }
+  main { max-width: 640px; margin: 0 auto; padding: 16px; padding-bottom: 24px; }
+  h1 { font-size: 28px; margin: 16px 0; }
+  p { line-height: 1.6; }
+  .cta-row { display: flex; justify-content: flex-end; margin-top: 24px; }
+  #million-btn {
+    background: #FF1E89; color: #fff; border: 0; border-radius: 8px;
+    padding: 14px 20px; font-size: 16px; cursor: pointer;
+  }
+</style>
+</head>
+<body>
+<!-- The banner lives inside a web component's shadow root. A probe that
+     only runs querySelectorAll('body *') never sees it — this fixture
+     proves No Cover does. -->
+<promo-banner></promo-banner>
+<script>
+  class PromoBanner extends HTMLElement {
+    constructor() {
+      super();
+      const shadow = this.attachShadow({ mode: 'open' });
+      const div = document.createElement('div');
+      div.id = 'promo-banner';
+      div.textContent = 'PROMO — 50% OFF';
+      const style = document.createElement('style');
+      style.textContent = `
+        #promo-banner {
+          position: fixed; left: 16px; right: 16px; bottom: 16px; height: 76px;
+          background: #FF8200; color: #fff; border-radius: 8px;
+          display: flex; align-items: center; justify-content: center;
+          font-weight: 700; font-size: 14px; z-index: 50;
+        }
+      `;
+      shadow.appendChild(style);
+      shadow.appendChild(div);
+    }
+  }
+  customElements.define('promo-banner', PromoBanner);
+</script>
+<main>
+  <h1>Shadow DOM Test</h1>
+  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+  <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+  <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
+  <p>Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet.</p>
+  <p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident.</p>
+  <p>Similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio.</p>
+  <p>Cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus.</p>
+  <p>Saepes ea quo saepe non recusandae, iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident.</p>
+  <p>Similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus.</p>
+  <div class="cta-row">
+    <button id="million-btn">Send me a million dollars</button>
+  </div>
+</main>
+</body>
+</html>
